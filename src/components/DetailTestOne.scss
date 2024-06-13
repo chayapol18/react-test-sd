@@ -1,0 +1,134 @@
+$background-geometric-color: #aaa;
+$background-button-hover-color: #ffa200;
+$background-button-color: white;
+$background-button-text-color: #6eda78;
+
+
+.all-button-container {
+    padding-top: 100px;
+    padding-left: 15%; 
+    padding-right: 15%;
+}
+
+.button-container {
+    position: relative;
+    background-color: $background-button-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+    padding: 20px 80px;
+    border-radius: 10px;
+}
+
+.button-container:hover {
+    background-color: $background-button-hover-color;
+    cursor: pointer;
+}
+
+.button-text {
+    background-color: $background-button-text-color;
+    position: absolute;
+    bottom: 0; 
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-bottom: -12px;
+}
+
+.all-geometric-container {
+    max-width: 100%;
+    padding-left: 15%; 
+    padding-right: 15%;
+}
+
+.geometric-container {
+    margin: 5px;
+}
+
+.large-geometric-container {
+    background-color: $background-button-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+    padding: 20px 10px;
+    border-radius: 10px;
+}
+
+.large-geometric-container:hover {
+    background-color: $background-button-hover-color;
+    cursor: pointer;
+}
+
+
+.triangle-right {
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-bottom: 50px solid transparent;
+    border-left: 100px solid $background-geometric-color;
+}
+
+.triangle-left {
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-bottom: 50px solid transparent;
+    border-right: 100px solid $background-geometric-color;
+}
+
+.triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid $background-geometric-color;
+}
+
+.triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-top: 100px solid $background-geometric-color;
+}
+
+.circle {
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%;
+    background-color: $background-geometric-color;
+}
+
+.square {
+    width: 100px; 
+    height: 100px;
+    background-color: $background-geometric-color;
+}
+
+.ellipse-horizontal {
+    width: 250px;
+    height: 100px;
+    border-radius: 100%;
+    background-color: $background-geometric-color;
+}
+
+.trapezoid {
+    width: 250px;
+    height: 100px;
+    background-color: $background-geometric-color;
+    clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+}
+
+.rectangle {
+    width: 250px; 
+    height: 100px;
+    background-color: $background-geometric-color;
+}
+
+.rhombus {
+    width: 280px;
+    height: 100px;
+    background-color: $background-geometric-color;
+    clip-path: polygon(15% 100%, 0 0, 85% 0, 100% 100%);
+}

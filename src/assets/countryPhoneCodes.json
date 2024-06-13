@@ -1,0 +1,12 @@
+[
+    {"country":"China","code":"86","iso":"CN"},
+    {"country":"Indonesia","code":"62","iso":"ID"},
+    {"country":"Japan","code":"81","iso":"JP"},
+    {"country":"Singapore","code":"65","iso":"SG"},
+    {"country":"South Korea","code":"82","iso":"KR"},
+    {"country":"Taiwan","code":"886","iso":"TW"},
+    {"country":"Thailand","code":"66","iso":"TH"},
+    {"country":"United Kingdom","code":"44","iso":"GB"},
+    {"country":"United States","code":"1","iso":"US"},
+    {"country":"Vietnam","code":"84","iso":"VN"}
+]
