@@ -1,5 +1,11 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  Route,
+  Routes,
+  Link,
+  useLocation,
+  useNavigate 
+} from 'react-router-dom';
 
 import './App.scss'
 import { Button, Flex, Select, Layout } from 'antd';
@@ -35,18 +41,21 @@ const contentStyle: React.CSSProperties = {
 
 function App() {
   const { i18n } = useTranslation();
-  const [testItemSelected, setTestItemSelected] = useState<number>(0) 
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const testList = [
     {
       id: 1,
       title: 'Main.TitleFirstTest',
-      detail: 'Main.DetailFirstTest'
+      detail: 'Main.DetailFirstTest',
+      path: '/test-one'
     },
     {
       id: 2,
       title: 'Main.TitleSecondTest',
-      detail: 'Main.DetailSecondTest'
+      detail: 'Main.DetailSecondTest',
+      path: '/test-two'
     },
   ]
 
@@ -59,13 +68,13 @@ function App() {
       <Layout style={layoutStyle}>
         <Header style={headerStyle}>
           {
-            testItemSelected !== 0 && 
-            <Button type="text" icon={<CaretLeftOutlined style={{ fontSize: '32px'}}/>} style={{marginRight: '12px'}} onClick={() => setTestItemSelected(0)}/>
+            location.pathname !== "/" && 
+            <Button type="text" icon={<CaretLeftOutlined style={{ fontSize: '32px'}}/>} style={{marginRight: '12px'}} onClick={() => navigate(-1)}/>
           }
           {
-            testItemSelected === 1 ? 
+            location.pathname === "/test-one" ? 
             <span style={{ fontSize: '32px', color: 'black', fontWeight: 700 }}>{i18n.t('Main.DetailFirstTest')}</span>
-            : testItemSelected === 2 ?
+            : location.pathname === "/test-two" ?
             <span style={{ fontSize: '32px', color: 'black', fontWeight: 700 }}>{i18n.t('Main.DetailSecondTest')}</span>
             : <></>
           }
@@ -82,30 +91,27 @@ function App() {
         </Header>
         <Content style={contentStyle}>
           {
-            testItemSelected === 0 ?
+            location.pathname === "/" &&
             <Flex style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'space-around', padding: '10% 15%'}}>
               {
                 testList.map((item) => (
-                  <div 
+                  <Link to={`${item.path}`}
                     key={item.id} 
-                    className='test-container' 
-                    onClick={() => setTestItemSelected(item.id)}
+                    className='test-container'
                   >
                     <div style={{color: 'black', fontSize: '20px', textAlign: 'left'}}>
                       <p>{i18n.t(item.title)}</p>
                       <p>{i18n.t(item.detail)}</p>
                     </div>
-                  </div>
+                  </Link>
                 ))
               }
             </Flex>
-            : testItemSelected === 1 ?
-              <DetailTestOne />
-            : testItemSelected === 2 ?
-              <DetailTestTwo />
-            :
-            <></>
           }
+        <Routes>
+          <Route path="/test-one" element={<DetailTestOne />} />
+          <Route path="/test-two" element={<DetailTestTwo />} />
+        </Routes>
         </Content>
       </Layout>
     </div>
