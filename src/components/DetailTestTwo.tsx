@@ -23,7 +23,7 @@ import type { FormProps, GetProps, TableColumnsType, TableProps, CheckboxProps }
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { updateUserData, updateIsEdit, editUserData, updateEditItem, addMultipleUserData, updateIsSelectedAll } from '../store/userSlice'
+import { updateApplicantData, updateIsEdit, editApplicantData, updateEditItem, addMultipleApplicantData, updateIsSelectedAll } from '../store/applicantSlice'
 
 import './DetailTestTwo.scss'
 
@@ -65,17 +65,17 @@ function DetailTestTwo() {
     const { i18n } = useTranslation();
     const [form] = Form.useForm();
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const isEditStore = useSelector((state: ReturnType<typeof rootReducer>) => state.user.isEdit);
-    const isSelectedAllStore = useSelector((state: ReturnType<typeof rootReducer>) => state.user.isSelectedAll);
-    const userDataStore = useSelector((state: ReturnType<typeof rootReducer>) => state.user.data);
-    const userEditDataStore = useSelector((state: ReturnType<typeof rootReducer>) => state.user.editData);
+    const isEditStore = useSelector((state: ReturnType<typeof rootReducer>) => state.applicant.isEdit);
+    const isSelectedAllStore = useSelector((state: ReturnType<typeof rootReducer>) => state.applicant.isSelectedAll);
+    const applicantDataStore = useSelector((state: ReturnType<typeof rootReducer>) => state.applicant.data);
+    const applicantEditDataStore = useSelector((state: ReturnType<typeof rootReducer>) => state.applicant.editData);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const localData = localStorage.getItem('userData')
+        const localData = localStorage.getItem('applicantData')
         if (localData !== null && localData.length > 0) {
             const data = JSON.parse(localData)
-            dispatch(updateUserData(data.sort((a: any, b: any) => b.id - a.id)))
+            dispatch(updateApplicantData(data.sort((a: any, b: any) => b.id - a.id)))
         }
         
     }, [])
@@ -115,12 +115,12 @@ const columns: TableColumnsType<DataType> = [
       dataIndex: 'manage',
       render: (_, record) => 
       <Flex>
-        <Button icon={<EditOutlined />} style={{marginRight: '8px'}} onClick={() => onEditUserData(record)}/>
+        <Button icon={<EditOutlined />} style={{marginRight: '8px'}} onClick={() => onEditApplicantData(record)}/>
         <Popconfirm
             title={i18n.t('TestTwo.TitlePopupDelete')}
             description={i18n.t('TestTwo.DetailPopupDelete')}
             okText={i18n.t('TestTwo.ConfirmPopupDeleteAll')}
-            onConfirm={() => onDeleteUserData(record.key)}
+            onConfirm={() => onDeleteApplicantData(record.key)}
             cancelText={i18n.t('TestTwo.CancelPopupDeleteAll')}
         >
             <Button disabled={isEditStore} icon={<DeleteOutlined />} />
@@ -129,7 +129,7 @@ const columns: TableColumnsType<DataType> = [
         },
     ];
 
-    const onEditUserData = (item: any) => {
+    const onEditApplicantData = (item: any) => {
         dispatch(updateEditItem(item))
         dispatch(updateIsEdit(true))
         form.setFieldsValue({ 
@@ -152,9 +152,9 @@ const columns: TableColumnsType<DataType> = [
         });
     }
 
-    const onDeleteUserData = (id: any) => {
-        const restUserData = userDataStore.filter((item) => item.id !== id)
-        dispatch(updateUserData(restUserData.sort((a: any, b: any) => b.id - a.id)))
+    const onDeleteApplicantData = (id: any) => {
+        const restApplicantData = applicantDataStore.filter((item) => item.id !== id)
+        dispatch(updateApplicantData(restApplicantData.sort((a: any, b: any) => b.id - a.id)))
     }
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -207,8 +207,8 @@ const columns: TableColumnsType<DataType> = [
 
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
         if (isEditStore) {
-            const editItem = userDataStore.find((item) => item.id === userEditDataStore.id)
-            const editItemIndex = userDataStore.findIndex((item) => item.id === editItem.id)
+            const editItem = applicantDataStore.find((item) => item.id === applicantEditDataStore.id)
+            const editItemIndex = applicantDataStore.findIndex((item) => item.id === editItem.id)
             
             const data = {
                 ...values,
@@ -220,11 +220,11 @@ const columns: TableColumnsType<DataType> = [
                 fullIdCard: `${values.idCard || ''}${values.idCard2 || ''}${values.idCard3 || ''}${values.idCard4 || ''}${values.idCard5 || ''}`,
             }
             if (editItemIndex !== -1) {
-                dispatch(editUserData({item: data, index: editItemIndex}))    
+                dispatch(editApplicantData({item: data, index: editItemIndex}))    
                 onReset()
             }
         } else {
-            const localData = localStorage.getItem('userData') 
+            const localData = localStorage.getItem('applicantData') 
             let id = 1
             
             if (localData !== null && localData.length > 0) {
@@ -240,8 +240,8 @@ const columns: TableColumnsType<DataType> = [
                 fullPhoneNumber: `${values.phoneCode}${values.phoneNumber}`,
                 fullIdCard: `${values.idCard || ''}${values.idCard2 || ''}${values.idCard3 || ''}${values.idCard4 || ''}${values.idCard5 || ''}`,
             }
-            const newDataList = [data, ...userDataStore];
-            dispatch(updateUserData(newDataList.sort((a, b) => b.id - a.id)))
+            const newDataList = [data, ...applicantDataStore];
+            dispatch(updateApplicantData(newDataList.sort((a, b) => b.id - a.id)))
             onReset()
         }
     };
@@ -258,7 +258,7 @@ const columns: TableColumnsType<DataType> = [
      if (e.target.checked) {
         dispatch(updateIsSelectedAll(true))
         const allSelectedRowKeys: any[] = []
-        userDataStore.map((item) => {
+        applicantDataStore.map((item) => {
             allSelectedRowKeys.push(item.key)
         })
         if (allSelectedRowKeys.length > 0) {
@@ -270,13 +270,13 @@ const columns: TableColumnsType<DataType> = [
      }
     };
 
-    const onDeleteAllUserData = () => {
+    const onDeleteAllApplicantData = () => {
         if (selectedRowKeys.length > 0) {
-            const restUserData = userDataStore.filter((item) => !selectedRowKeys.includes(item.id))
-            dispatch(updateUserData(restUserData.sort((a: any, b: any) => b.id - a.id)))
+            const restApplicantData = applicantDataStore.filter((item) => !selectedRowKeys.includes(item.id))
+            dispatch(updateApplicantData(restApplicantData.sort((a: any, b: any) => b.id - a.id)))
             dispatch(updateIsSelectedAll(false))
         } else if (isSelectedAllStore) {
-            dispatch(updateUserData([]))
+            dispatch(updateApplicantData([]))
             dispatch(updateIsSelectedAll(false))
         }
     }
@@ -474,20 +474,20 @@ const columns: TableColumnsType<DataType> = [
             <div style={{ width: '90%', margin: '50px auto 0',}}>
                 <Flex style={{ alignItems: 'center', marginBottom: '20px', justifyContent: 'space-between'}}>
                     <Flex style={{ alignItems: 'center'}}>
-                        <Checkbox disabled={userDataStore.length === 0 || isEditStore} checked={isSelectedAllStore} onChange={onCheckAll}>{i18n.t('TestTwo.SelectAll')}</Checkbox>
+                        <Checkbox disabled={applicantDataStore.length === 0 || isEditStore} checked={isSelectedAllStore} onChange={onCheckAll}>{i18n.t('TestTwo.SelectAll')}</Checkbox>
                         <Popconfirm
                             title={i18n.t('TestTwo.TitlePopupDeleteAll')}
                             description={i18n.t('TestTwo.DetailPopupDeleteAll')}
                             okText={i18n.t('TestTwo.ConfirmPopupDeleteAll')}
-                            onConfirm={onDeleteAllUserData}
+                            onConfirm={onDeleteAllApplicantData}
                             cancelText={i18n.t('TestTwo.CancelPopupDeleteAll')}
                         >
                             <Button disabled={(!isSelectedAllStore && selectedRowKeys.length === 0) || isEditStore}>{i18n.t('TestTwo.DeleteAll')}</Button>
                         </Popconfirm>
                     </Flex>
-                        <Button onClick={() => dispatch(addMultipleUserData())}>{i18n.t('TestTwo.AddExample')}</Button>
+                        <Button onClick={() => dispatch(addMultipleApplicantData())}>{i18n.t('TestTwo.AddExample')}</Button>
                 </Flex>
-                <Table rowSelection={rowSelection} pagination={{ pageSize: 5, position: ['bottomCenter']}} columns={columns} dataSource={userDataStore} />
+                <Table rowSelection={rowSelection} pagination={{ pageSize: 5, position: ['bottomCenter']}} columns={columns} dataSource={applicantDataStore} />
             </div>
         </Flex>
     );

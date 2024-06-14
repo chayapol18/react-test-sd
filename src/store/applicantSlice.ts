@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 
-interface UserState {
+interface ApplicantState {
   data: any[];
   editData: any;
   isEdit: boolean;
   isSelectedAll: boolean;
 }
 
-const initialState: UserState = {
+const initialState: ApplicantState = {
   data: [],
   editData: {},
   isEdit: false,
@@ -20,11 +20,11 @@ interface editItemsState {
   index: number;
 }
 
-const userSlice = createSlice({
-  name: 'user',
+const applicantSlice = createSlice({
+  name: 'applicant',
   initialState,
   reducers: {
-    addMultipleUserData(state) {
+    addMultipleApplicantData(state) {
       for (let i = 0; i < 15; i++) {
         state.data.push({
           title: "นาย",
@@ -48,13 +48,13 @@ const userSlice = createSlice({
           fullIdCard: "1222313331313"
         })
       }
-      localStorage.setItem('userData', JSON.stringify(state.data))
+      localStorage.setItem('applicantData', JSON.stringify(state.data))
     },
-    updateUserData(state, action: PayloadAction<any[]>) {
+    updateApplicantData(state, action: PayloadAction<any[]>) {
       if (action.payload.length === 0) {
-        localStorage.setItem('userData', '')
+        localStorage.setItem('applicantData', '')
       } else {
-        localStorage.setItem('userData', JSON.stringify(action.payload))
+        localStorage.setItem('applicantData', JSON.stringify(action.payload))
       }
       state.data = action.payload;
     },
@@ -67,12 +67,12 @@ const userSlice = createSlice({
     updateEditItem(state, action: PayloadAction<object>) {
       state.editData = action.payload
     },
-    editUserData(state, action: PayloadAction<editItemsState>) {
+    editApplicantData(state, action: PayloadAction<editItemsState>) {
       state.data[action.payload.index] = action.payload.item
-      localStorage.setItem('userData', JSON.stringify(state.data))
+      localStorage.setItem('applicantData', JSON.stringify(state.data))
     }
   },
 });
 
-export const { updateUserData, updateIsEdit, editUserData, updateEditItem, addMultipleUserData, updateIsSelectedAll } = userSlice.actions;
-export default userSlice.reducer;
+export const { addMultipleApplicantData, updateApplicantData, updateIsEdit, updateIsSelectedAll, updateEditItem, editApplicantData } = applicantSlice.actions;
+export default applicantSlice.reducer;
